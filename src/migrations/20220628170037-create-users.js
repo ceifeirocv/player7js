@@ -4,6 +4,7 @@ module.exports = {
       id: {
         allowNull: false,
         type: Sequelize.STRING,
+        primaryKey: true,
       },
       username: {
         allowNull: false,
@@ -15,6 +16,7 @@ module.exports = {
       },
       administrator: {
         type: Sequelize.BOOLEAN,
+        allowNull: false,
         default: false,
       },
       email: {
