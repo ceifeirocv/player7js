@@ -4,8 +4,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 require('./models');
 
-const usersRoutes = require('./routes/users');
-const sessionRoutes = require('./routes/sessions');
+const { usersRoutes, sessionRoutes } = require('./routes');
 
 const app = express();
 const PORT = process.env.PORT || 3333;
