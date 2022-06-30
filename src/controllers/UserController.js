@@ -32,4 +32,11 @@ module.exports = {
       administrator,
     });
   },
+  async getUsers(req, res) {
+    const user = await Users.findAll({
+      attributes: ['id', 'username', 'email'],
+    });
+
+    return res.json(user);
+  },
 };
