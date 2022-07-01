@@ -39,4 +39,7 @@ module.exports = {
 
     return res.json(user);
   },
+  async update(req, res) {
+    return res.json({ id: req.userId, message: 'user updated' });
+  },
 };
