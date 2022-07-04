@@ -6,11 +6,13 @@ require('./models');
 
 const { usersRoutes, sessionRoutes } = require('./routes');
 const authMiddleware = require('./middlewares/auth');
+const jsonCheck = require('./middlewares/jsonCheck');
 
 const app = express();
 const PORT = process.env.PORT || 3333;
 
 app.use(bodyParser.json());
+app.use(jsonCheck);
 
 app.use('/users', authMiddleware, usersRoutes);
 app.use('/sessions', sessionRoutes);
