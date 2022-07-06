@@ -1,8 +1,18 @@
 const { Op } = require('sequelize');
+const Yup = require('yup');
+
 const { Users } = require('../models');
 
 module.exports = {
   async store(req, res) {
+    const schema = Yup.object().shape({
+      username: Yup.string().required(),
+      email: Yup.string().email().required(),
+      password: Yup.string().required().min(8),
+    });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
     const userExists = await Users.findOne({
       where: {
         [Op.or]: [
@@ -42,6 +52,19 @@ module.exports = {
   },
 
   async update(req, res) {
+    const schema = Yup.object().shape({
+      email: Yup.string().email(),
+      password: Yup.string().required().min(8),
+      newPassword: Yup.string().min(8),
+      newPasswordConfirm: Yup.string().min(8)
+        .when(
+          'newPassword',
+          (newPassword, field) => (newPassword ? field.required() : field),
+        ),
+    });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
     const {
       email,
       password: oldPassword,
