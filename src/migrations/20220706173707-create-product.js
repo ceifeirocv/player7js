@@ -18,6 +18,10 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false,
       },
+      typeId: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -61,6 +61,7 @@ module.exports = {
           'newPassword',
           (newPassword, field) => (newPassword ? field.required() : field),
         ),
+      administrator: Yup.boolean(),
     });
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
@@ -70,6 +71,7 @@ module.exports = {
       password: oldPassword,
       newPassword: password,
       newPasswordConfirm,
+      administrator,
     } = req.body;
 
     const user = await Users.findByPk(req.userId);
@@ -89,8 +91,7 @@ module.exports = {
     const {
       id,
       username,
-      administrator,
-    } = await user.update({ password, email });
+    } = await user.update({ password, email, administrator });
 
     return res.json({
       id,
