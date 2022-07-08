@@ -1,6 +1,17 @@
 const { Product, ProductTypes } = require('../models');
 
 module.exports = {
+  async get(req, res) {
+    const products = await Product.findAll({
+      attributes: { exclude: ['updatedAt', 'createdAt', 'typeId'] },
+      include: {
+        model: ProductTypes,
+        attributes: { exclude: ['updatedAt', 'createdAt', 'id'] },
+      },
+    });
+
+    return res.json(products);
+  },
   async store(req, res) {
     const productExists = await Product.findOne({ where: { name: req.body.name } });
     if (productExists) return res.status(403).json({ erro: 'product alrady exists' });
