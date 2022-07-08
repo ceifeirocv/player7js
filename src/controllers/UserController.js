@@ -5,6 +5,9 @@ const { Users } = require('../models');
 
 module.exports = {
   async store(req, res) {
+    const userIsAdmin = await Users.findOne({ where: { id: req.userId } });
+    if (!userIsAdmin.administrator) return res.status(401).json({ erro: 'Not Authorized' });
+
     const schema = Yup.object().shape({
       username: Yup.string().required(),
       email: Yup.string().email().required(),
@@ -21,10 +24,10 @@ module.exports = {
         ],
       },
     });
-    if (userExists.username === req.body.username) {
+    if (userExists && userExists.username === req.body.username) {
       return res.status(404).json({ error: 'Username already taken.' });
     }
-    if (userExists.email === req.body.email) {
+    if (userExists && userExists.email === req.body.email) {
       return res.status(404).json({ error: 'User with provided email already exists' });
     }
 
@@ -99,5 +102,23 @@ module.exports = {
       email,
       administrator,
     });
+  },
+  // eslint-disable-next-line consistent-return
+  async delete(req, res) {
+    const userIsAdmin = await Users.findOne({ where: { id: req.userId } });
+    if (!userIsAdmin.administrator) return res.status(401).json({ erro: 'Not Authorized' });
+
+    // const userToDelete = await Users.findOne({ where: { id: req.body.id } });
+    await Users.destroy({
+      where: {
+        id: req.body.id,
+      },
+    }).then((count) => {
+      if (!count) {
+        return res.status(404).json({ error: 'No user' });
+      }
+      return res.status(200).json({ message: `user ${req.body.id} deleted` });
+    })
+      .catch(() => res.status(404).json({ erro: 'no Id' }));
   },
 };

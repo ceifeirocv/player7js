@@ -6,7 +6,7 @@ module.exports = {
     if (productExists) return res.status(403).json({ erro: 'product alrady exists' });
 
     const productType = await ProductTypes.findOne({ where: { type: req.body.type } });
-    if (!productType) return res.status(403).json({ erro: 'This product type soes not exists' });
+    if (!productType) return res.status(403).json({ erro: 'This product type does not exists' });
 
     const product = await Product.create({ ...req.body, typeId: productType.id });
 

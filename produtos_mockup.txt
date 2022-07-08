@@ -1,0 +1,17 @@
+{
+	"name": "Hamburgof",
+	"type": "FastFood",
+	"price": 150,
+	"description": "Hamburguer, Ovos, Salada, Batata Frita."
+}
+{
+	"name": "Caipirinha",
+	"type": "Bebidas",
+	"price": 100
+}
+{
+	"name": "Criola",
+	"type": "Pizzas",
+	"price": 100,
+	"description": "Churico, Natas, Ananas, Quijo, Fiambre"
+}
