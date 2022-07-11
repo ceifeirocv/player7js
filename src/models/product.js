@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       });
+      this.belongsTo(models.File, {
+        foreignKey: {
+          name: 'imageId',
+        },
+      });
     }
   }
   Product.init({

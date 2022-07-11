@@ -9,9 +9,9 @@ module.exports = {
         attributes: { exclude: ['updatedAt', 'createdAt', 'id'] },
       },
     });
-
     return res.json(products);
   },
+
   async store(req, res) {
     const productExists = await Product.findOne({ where: { name: req.body.name } });
     if (productExists) return res.status(403).json({ erro: 'product alrady exists' });
@@ -23,6 +23,7 @@ module.exports = {
 
     return res.json(product);
   },
+
   async update(req, res) {
     const productToUpdate = await Product.findOne({ where: { id: req.body.id } });
 
