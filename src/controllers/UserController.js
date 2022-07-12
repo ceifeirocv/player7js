@@ -79,13 +79,13 @@ module.exports = {
 
     const user = await Users.findByPk(req.userId);
 
-    if (!oldPassword || !(await user.checkPassword(oldPassword))) {
+    if (!(await user.checkPassword(oldPassword))) {
       return res.status(401).json({ error: 'password does not match' });
     }
 
     if (email) {
       const userExists = await Users.findOne({ where: { email } });
-      if (userExists && userExists.email === email) {
+      if (userExists) {
         return res.status(404).json({ error: 'User with provided email already exists' });
       }
     }
@@ -105,8 +105,8 @@ module.exports = {
   },
   // eslint-disable-next-line consistent-return
   async delete(req, res) {
-    const userIsAdmin = await Users.findOne({ where: { id: req.userId } });
-    if (!userIsAdmin.administrator) return res.status(401).json({ erro: 'Not Authorized' });
+    const userIsAdmin = await Users.findOne({ where: { id: req.userId, administrator: true } });
+    if (userIsAdmin) return res.status(401).json({ erro: 'Not Authorized' });
 
     // const userToDelete = await Users.findOne({ where: { id: req.body.id } });
     await Users.destroy({

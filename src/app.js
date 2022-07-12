@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const path = require('path');
 
 const {
   usersRoutes,
@@ -23,6 +24,7 @@ class App {
   middlewares() {
     this.server.use(bodyParser.json());
     this.server.use(jsonCheck);
+    this.server.use('/files', express.static(path.resolve(__dirname, '..', 'tmp', 'upload')));
   }
 
   routes() {
