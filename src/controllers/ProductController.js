@@ -1,13 +1,19 @@
-const { Product, ProductTypes } = require('../models');
+const { Product, ProductTypes, File } = require('../models');
 
 module.exports = {
   async get(req, res) {
     const products = await Product.findAll({
-      attributes: { exclude: ['updatedAt', 'createdAt', 'typeId'] },
-      include: {
-        model: ProductTypes,
-        attributes: { exclude: ['updatedAt', 'createdAt', 'id'] },
-      },
+      attributes: { exclude: ['updatedAt', 'createdAt', 'typeId', 'imageId'] },
+      include: [
+        {
+          model: ProductTypes,
+          attributes: { exclude: ['updatedAt', 'createdAt', 'id'] },
+        },
+        {
+          model: File,
+          attributes: { exclude: ['updatedAt', 'createdAt', 'id'] },
+        },
+      ],
     });
     return res.json(products);
   },
